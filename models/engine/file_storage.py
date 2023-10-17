@@ -6,18 +6,20 @@ from models.user import User
 
 
 class FileStorage:
-    """Serializes instances to a JSON file."""
+    """Serializes instances to a JSON file
+        and deserializes JSON file to instances.
+    """
     # private instance attributes
     __file_path = "file.json"
     __objects = {}
 
     # public instance methods
     def all(self):
-        """Returns the dictionar"""
+        """Returns the dictionary __objects"""
         return (FileStorage.__objects)
 
     def new(self, obj):
-        """Sets in __objects the obj with key"""
+        """Sets in __objects the obj with key <obj class name>.id"""
         FileStorage.__objects[f"{obj.__class__.__name__}.{obj.id}"] = obj
 
     def save(self):
@@ -31,7 +33,8 @@ class FileStorage:
             json.dump(objects_dict, f)
 
     def reload(self):
-        """Deserializes the JSON file to __objects."""
+        """Deserializes the JSON file to __objects \
+            or do nothing whether the JSON file exists or not."""
         try:
             with open(FileStorage.__file_path, "r") as f:
                 objects_dict = json.load(f)
